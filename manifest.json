@@ -21,6 +21,7 @@
     },
 
     "permissions": [
-        "alwaysOnTopWindows"
+        "alwaysOnTopWindows",
+        "storage"
     ]
 }
