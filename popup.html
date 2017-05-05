@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Quillbox</title>
+    <style>
+    #mathquill {
+        font-size: 48px;
+        border: 0px;
+        box-shadow: none; 
+    }
+    #quillholder {
+        height:100%;
+        cursor:text;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    html, body {
+        height: 100%;
+    }
+    body {
+        margin: 0px
+    }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+     -->
+     <link rel="stylesheet" href="mathquill/mathquill.css"/>
+     <script src="jquery.min.js"></script>
+     <script src="mathquill/mathquill.js"></script>
+  </head>
+  <body>
+      <div id="quillholder">
+          <div id="mathquill"></div>
+      </div>
+  </body>
+ <script src="popup.js"></script>
+</html>
+

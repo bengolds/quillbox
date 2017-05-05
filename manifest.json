@@ -1,0 +1,26 @@
+{
+    "name": "Quillbox",
+    "description": "Show mathquill",
+    "version": "1.0",
+    "manifest_version": 2,
+
+    "app": {
+        "background": {
+            "scripts": ["eventPage.js"]
+        }
+    },
+
+    "commands": {
+        "toggle-panel": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+M"
+            },
+            "description": "Toggle Mathquill panel"
+        }
+
+    },
+
+    "permissions": [
+        "alwaysOnTopWindows"
+    ]
+}
