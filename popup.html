@@ -17,12 +17,14 @@
     }
     html, body {
         height: 100%;
+        overflow: hidden;
     }
     body {
         margin: 0px
     }
     </style>
 
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
@@ -32,6 +34,8 @@
      <link rel="stylesheet" href="mathquill/mathquill.css"/>
      <script src="jquery.min.js"></script>
      <script src="mathquill/mathquill.js"></script>
+
+     <script>if (window.module) module = window.module;</script>
   </head>
   <body>
       <div id="quillholder">

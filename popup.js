@@ -4,18 +4,23 @@ let history = [];
 let currString = '';
 
 function onQuillEdit(field) {
+    resize(field);
+}
+function resize(field) {
+    let oldWidth = window.innerWidth, oldHeight = window.innerHeight;
+    let center = {x: window.screenX + oldWidth/2, y: window.screenY + oldHeight/2};
+
     let el = field.el();
-    let w = Math.max(el.offsetWidth, 100)
-    let h = Math.max(el.offsetHeight, 100);
-    window.resizeTo(w, h);
-    console.log(screen.width, screen.height);
-    let l = screen.width/2 - w/2, t = screen.height/2 - h/2;
-    window.moveTo(l, t);
+    let newWidth = Math.max(el.offsetWidth, 100)
+    let newHeight = Math.max(el.offsetHeight, 100);
+    window.resizeTo(newWidth, newHeight);
+    let left = screen.width/2 - newWidth/2, top = center.y - newHeight/2;
+    window.moveTo(left, top);
 }
 let quillEl = document.getElementById('mathquill');
 let quillField = MQ.MathField(quillEl, {
-    autoCommands: 'alpha beta lambda gamma theta pi psi' 
-        + 'Lambda Gamma Theta Pi'
+    autoCommands: 'alpha beta lambda gamma theta pi psi ' 
+        + 'Lambda Gamma Theta Pi '
         + 'int sum sqrt choose neq',
     handlers: {
         edit: onQuillEdit,
@@ -40,6 +45,7 @@ function goPrevious() {
     historyIndex++;
     if (historyIndex < history.length) {
         quillField.latex(history[historyIndex]);
+        resize();
     }
 }
 function goNext() {
@@ -52,6 +58,7 @@ function goNext() {
     } 
     else {
         quillField.latex(history[historyIndex]);
+        resize(quillField);
     }
 }
 
@@ -60,10 +67,10 @@ document.addEventListener('keydown', event=> {
         saveToHistory();
         window.close();
     }
-    if (event.key === 'ArrowUp') {
+    if (event.key === 'ArrowUp' && event.ctrlKey) {
         goPrevious();
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && event.ctrlKey) {
         goNext();
     }
 });
@@ -73,21 +80,34 @@ document.getElementById('quillholder').addEventListener('mousedown', (e) => {
     e.preventDefault();
 });
 
-chrome.storage.local.get('history', (items) => {
-    console.log(items);
-    if (!chrome.runtime.lastError) {
-        history = items.history || [];
+loadHistory();
+
+function loadHistory() {
+    if (typeof chrome !== 'undefined') {
+        chrome.storage.local.get('history', (items) => {
+            console.log(items);
+            if (!chrome.runtime.lastError) {
+                history = items.history || [];
+            }
+        });
+    } else {
+        history = JSON.parse(window.localStorage.getItem('history')) || [];
     }
-});
+}
 
 function saveToHistory() {
     currString = quillField.latex();
     if (currString === '') 
         return;
     history.unshift(quillField.latex());
-    chrome.storage.local.set({
-        history: history
-    });
+    if (typeof chrome !== 'undefined') {
+        chrome.storage.local.set({
+            history: history
+        });
+    } 
+    else {
+        window.localStorage.setItem('history', JSON.stringify(history));
+    }
 }
 
 
