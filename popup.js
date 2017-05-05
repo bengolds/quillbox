@@ -14,6 +14,11 @@ let quillField = MQ.MathField(quillEl, {
     autoCommands: 'alpha beta lambda pi int sqrt',
     handlers: {
         edit: onQuillEdit,
+        enter: (field) => {
+            field.select();
+            document.execCommand('copy');
+            window.close();
+        }
     },
 });
 quillField.focus();
